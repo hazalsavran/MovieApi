@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\MovieApi.Application\MovieApi.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\MovieApi.Persistence\MovieApi.Persistence.csproj" />
   </ItemGroup>
 

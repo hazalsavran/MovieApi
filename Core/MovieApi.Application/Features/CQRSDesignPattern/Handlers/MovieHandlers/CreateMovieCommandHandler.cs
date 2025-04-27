@@ -17,7 +17,7 @@ namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers
         {
             _context = context;
         }
-        public async void Handle(CreateMovieCommand command)
+        public async Task Handle(CreateMovieCommand command)
         {
             // automapper gelecek
             var movie = new Movie
