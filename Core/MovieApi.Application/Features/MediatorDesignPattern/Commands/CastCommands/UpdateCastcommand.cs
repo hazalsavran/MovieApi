@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MovieApi.Application.Features.MediatorDesignPattern.Commands.CastCommands
 {
-    public class UpdateCastcommand : IRequest
+    public class UpdateCastCommand : IRequest
     {
         public int CastId { get; set; }
         public string Name { get; set; }
