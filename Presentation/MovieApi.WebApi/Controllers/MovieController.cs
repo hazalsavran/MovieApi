@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieApi.Application.Features.CQRSDesignPattern.Commands.MovieCommands;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers;
 using MovieApi.Application.Features.CQRSDesignPattern.Queries.MovieQueries;
+using System.Text.Json;
 
 
 namespace MovieApi.WebApi.Controllers
@@ -33,11 +34,30 @@ namespace MovieApi.WebApi.Controllers
             return Ok(value);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateMovie(CreateMovieCommand command)
+        public async Task<IActionResult> CreateMovie([FromBody] JsonElement data)
         {
-            await _createMovieCommandHandler.Handle(command);
-            return Ok("Film Ekleme İşlemi Başarılı");
+            if (data.ValueKind == JsonValueKind.Object)
+            {
+                var command = JsonSerializer.Deserialize<CreateMovieCommand>(data.GetRawText());
+                await _createMovieCommandHandler.Handle(command);
+            }
+            else if (data.ValueKind == JsonValueKind.Array)
+            {
+                var commands = JsonSerializer.Deserialize<List<CreateMovieCommand>>(data.GetRawText());
+                foreach (var command in commands)
+                {
+                    await _createMovieCommandHandler.Handle(command);
+                }
+            }
+            else
+            {
+                return BadRequest("Geçersiz veri formatı.");
+            }
+
+            return Ok("Film(ler) başarıyla eklendi.");
         }
+
+
         [HttpDelete]
         public async Task<IActionResult> DeleteMovie(int id)
         {
