@@ -36,7 +36,13 @@
 
 
 	<!-- END | Header -->
-	@await Component.InvokeAsync("_UserLayoutWebUIHeroComponentPartial")
+	@{
+		if (ViewBag.pageType != "MovieDetail")
+		{
+			@await Component.InvokeAsync("_UserLayoutWebUIHeroComponentPartial")
+		}
+	}
+	
 
 
 	@RenderBody()
